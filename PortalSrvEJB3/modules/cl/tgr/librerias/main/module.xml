@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="cl.tgr.librerias" xmlns="urn:jboss:module:1.5">
+
+    <properties>
+        <property name="jboss.api" value="private"/>
+    </properties>
+
+    <resources>
+        <resource-root path="EcuLink.jar"/>
+        <resource-root path="SafMessages.jar"/>
+        <resource-root path="RentaSchema.jar"/>
+        <resource-root path="utilSecutiry81-2.0.jar"/>
+        <resource-root path="ojdbc6.jar"/>
+	    <resource-root path="xmlbeans-2.4.0.jar"/>
+	    <resource-root path="PkgClaseArEJBClient.jar"/>
+	
+	    <resource-root path="PkgBelServicesTrxEJB3Client.jar"/>
+	    <resource-root path="PkgCajaServicesTrxEJBClient.jar"/>
+	    <resource-root path="PkgCutServicesTrxEJB.jar"/>
+	    <resource-root path="UserDocuments.jar"/>
+	    <resource-root path="RMEUtils.jar"/>
+    </resources>
+
+  <dependencies>
+    <module name="javax.servlet.api"/>
+  </dependencies>
+</module>
