@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cl.gob.tgr.monex</groupId>
-	<artifactId>PkgCutServicesTrxEJB</artifactId>
+	<artifactId>PkgCutServiceFronterizoEJB</artifactId>
 	<version>1.0.0</version>
 	<packaging>ejb</packaging>
 
-	<repositories>
+	<!-- <repositories>
 		<repository>
 			<id>maven-group</id>
 			<url>http://ec2-3-229-82-198.compute-1.amazonaws.com:8081/artifactory/tesoreria-releases</url>
@@ -23,10 +23,10 @@
 			<id>nexus-releases</id>
 			<url>http://ec2-3-229-82-198.compute-1.amazonaws.com:8081/artifactory/tesoreria-releases</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement> -->
 
 	<build>
-		<finalName>PkgCutServicesTrxEJB</finalName>
+		<finalName>PkgCutServiceFronterizoEJB</finalName>
 		<sourceDirectory>ejbModule</sourceDirectory>
 		<resources>
 			<resource>
@@ -67,64 +67,11 @@
 			<version>1.0.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>EcuLink</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>log4j-1.2.17</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>PkgBelServicesTrxEJB3Client</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>PkgCajaServicesTrxEJBClient</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>PkgClaseArEJBClient</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>SafMessages</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<!--<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>PkgCajaServicesPSrvEJB</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>-->
         <dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>PkgCajaServicesPSrvEJB</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>cl.gob.tgr.monex</groupId>
-			<artifactId>PkgCutServiceFronterizoEJB</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
+            <groupId>cl.gob.tgr.monex</groupId>
+            <artifactId>lib-tesoreria16-2.1</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 </project>

@@ -68,6 +68,12 @@
 		</dependency>
 		<dependency>
 			<groupId>cl.gob.tgr.monex</groupId>
+			<artifactId>PkgCutServiceFronterizoEJB</artifactId>
+			<version>1.0.0</version>
+			<type>ejb</type>
+		</dependency>
+		<dependency>
+			<groupId>cl.gob.tgr.monex</groupId>
 			<artifactId>PkgBelServicesTrxEJB3Client</artifactId>
 			<version>1.0.0</version>
 		</dependency>
