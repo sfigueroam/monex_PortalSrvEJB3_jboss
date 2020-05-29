@@ -2,28 +2,17 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>cl.teso.reca.portalsrv</groupId>
+		<artifactId>PortalSrvEJB3App</artifactId>
+		<version>2.0.0</version>
+	</parent>	
+	
 	<groupId>cl.gob.tgr.monex</groupId>
 	<artifactId>PkgCutServiceFronterizoEJB</artifactId>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<packaging>ejb</packaging>
-
-	<!-- <repositories>
-		<repository>
-			<id>maven-group</id>
-			<url>http://ec2-3-229-82-198.compute-1.amazonaws.com:8081/artifactory/tesoreria-releases</url>
-		</repository>
-	</repositories>
-  
-  	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<url>hhttp://ec2-3-229-82-198.compute-1.amazonaws.com:8081/artifactory/tesoreria-snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>nexus-releases</id>
-			<url>http://ec2-3-229-82-198.compute-1.amazonaws.com:8081/artifactory/tesoreria-releases</url>
-		</repository>
-	</distributionManagement> -->
 
 	<build>
 		<finalName>PkgCutServiceFronterizoEJB</finalName>
