@@ -24,6 +24,7 @@ RemoteSystemsTempFiles/
 *DS_Store/
 .DS_Store/
 .DS_Store
+*.DS_Store
 *.rpm
 *.tar
 *.gz

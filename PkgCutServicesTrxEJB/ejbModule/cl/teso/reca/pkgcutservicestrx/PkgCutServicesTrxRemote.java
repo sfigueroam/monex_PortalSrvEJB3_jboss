@@ -42,6 +42,14 @@ public interface PkgCutServicesTrxRemote {
 	   */
 	  public ConsultaDeudaPortalResult consultaDeudasAix(String usuario, BigDecimal sistema, String codTransac, Calendar fechaOrigen, BigDecimal idConsulta, BigDecimal grupo, BigDecimal canal, BigDecimal clienteTipo, BigDecimal rutRol, String rutRolDv, BigDecimal formTipo, String formVer, BigDecimal formFolio, Calendar vencimiento, Calendar periodo,String sistemaCondonacion)     throws PkgCutServicesTrxException;
 
+	  
+	  /**
+	   * Executes the "PKG_CUT_SERVICES_FRONTERIZO.CONSULTA_DEUDA_FRONTERIZO" database procedure.  FG
+	   */
+	  public ConsultaDeudaPortalResult consultaDeudasAix(String usuario, BigDecimal sistema, String codTransac, Date fechaOrigen, BigDecimal idConsulta, BigDecimal grupo, BigDecimal canal, BigDecimal folio, String pasaporte, String sistemaCondonacion )    throws PkgCutServicesTrxException;	  
+	  
+	  
+	  
 	  /**
 	   * Executes the "PKG_CUT_SERVICES_TRX.INGRESAR_FORM_IRA" database procedure.
 	   */

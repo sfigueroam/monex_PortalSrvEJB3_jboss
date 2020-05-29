@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -28,10 +29,14 @@ import cl.obcom.eculink.ClientLink;
 import cl.obcom.eculink.ClientSlot;
 import cl.obcom.eculink.LinkException;
 import cl.obcom.eculink.Message;
+import cl.teso.reca.conuslta.deuda.fronte.vo.ConsultaDeudaFronterizoInVO;
+import cl.teso.reca.conuslta.deuda.fronte.vo.ConsultaDeudaFronterizoOutCursorSalidaVO;
+import cl.teso.reca.conuslta.deuda.fronte.vo.ConsultaDeudaFronterizoOutVO;
 import cl.teso.reca.pkgbelservicestrx.PkgBelServicesTrxBeanRemote;
 import cl.teso.reca.pkgcajaservicestrx.PkgCajaServicesTrxRemote;
 import cl.teso.reca.pkgclasear.GenerarArParam;
 import cl.teso.reca.pkgclasear.PkgClaseArRemote;
+import cl.teso.reca.pkgcutservicesfronterizo.delegate.PkgCutServicesFronterizoDelegate;
 import cl.teso.reca.pkgcutservicestrx.classes.Messages.ArPdfParams;
 import cl.teso.reca.pkgcutservicestrx.classes.Messages.ConsultaDeudaPortalResult;
 import cl.teso.reca.pkgcutservicestrx.classes.Messages.ConsultarAvisoReciboResult;
@@ -67,7 +72,7 @@ import cl.teso.reca.pkgcutservicestrxsaf.messages.ProcesaTrnSafResult;
 import cl.teso.reca.portalsrv.pkgcajaservices.GetFrmIdResult;
 import cl.teso.reca.portalsrv.pkgcajaservices.GetFrmIdSafeResult;
 import cl.teso.reca.portalsrv.pkgcajaservices.PkgCajaServicesPSrvEJBRemote;
-import cl.teso.reca.portalsrv.pkgcajaservices.ProcesarResult;
+//import cl.teso.reca.portalsrv.pkgcajaservices.ProcesarResult;
 
 /**
  * Session Bean implementation class PkgCutServicesTrx
@@ -104,7 +109,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 	private static final String errorPagoARVax = "Error en Pago VAX: ";
 	private static final String errorCode20 = "Error en Base de Datos";
 	private static final String errorCode23AR = "RUT/ROL no existe";
-	private static final String errorCode25 = "RUT/ROL con mas de 500 Cuentas en CUT";
+//	private static final String errorCode25 = "RUT/ROL con mas de 500 Cuentas en CUT";
 	private static final String errorCode80 = "Error en parametros de la consulta";
 	private static final String errorCodeDefault = "Codigo de Retorno desconocido";
 	// --
@@ -112,48 +117,49 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 	private static final BigDecimal prmLoteTipo$Pago = new BigDecimal(11);
 	private static final BigDecimal prmLoteTipoRenta = new BigDecimal(30);
 	// --
-	private static final BigDecimal frmGrupo$Contribuciones = BigDecimal$1;
-	private static final BigDecimal frmGrupo$Aduana = BigDecimal$2;
-	private static final BigDecimal frmGrupo$Fiscales = new BigDecimal(3);
+//	private static final BigDecimal frmGrupo$Contribuciones = BigDecimal$1;
+//	private static final BigDecimal frmGrupo$Aduana = BigDecimal$2;
+//	private static final BigDecimal frmGrupo$Fiscales = new BigDecimal(3);
 	private static final BigDecimal frmGrupo$CuotasConvenios = new BigDecimal(4);
 	private static final BigDecimal frmGrupo$PatentesMineras = new BigDecimal(5);
 	private static final BigDecimal frmGrupo$Cora = new BigDecimal(6);
 	private static final BigDecimal frmGrupo$Cfu = new BigDecimal(7);
-	private static final BigDecimal frmGrupo$AduanaCourier = new BigDecimal(8);
+//	private static final BigDecimal frmGrupo$AduanaCourier = new BigDecimal(8);
 	private static final BigDecimal frmGrupo$AduanaDiferido = new BigDecimal(9);
 	private static final BigDecimal frmGrupo$CutReca = new BigDecimal(20);
 	private static final BigDecimal frmGrupo$CutVax = new BigDecimal(21);
 	// --
-	private static final int errLevelValidacionADF$Advertencia = 2; // Advertencia
+//	private static final int errLevelValidacionADF$Advertencia = 2; // Advertencia
 																	// en ADF
 	private static final int cutServices$Registrado = 5; // Advertencia en ADF
-	private static final int cutServices$Rechazado = 3;
+//	private static final int cutServices$Rechazado = 3;
 	private static final int cutServices$FatalRectificatoria = 3;
 	// --
-	private static final String VaxTimeout$EculinkException = "VAX: No Responde.VAX_TIMEOUT";
-	private static final String trnMensaje$VaxTimeout = "0012" + "00" + "024";
-	private static final String trnMensaje$VaxTimeoutCod = "12" + "024";
+//	private static final String VaxTimeout$EculinkException = "VAX: No Responde.VAX_TIMEOUT";
+//	private static final String trnMensaje$VaxTimeout = "0012" + "00" + "024";
+//	private static final String trnMensaje$VaxTimeoutCod = "12" + "024";
 	// --
-	private static final String trnMensaje$VaxErrorNoEspecificadoError = "0012"
-			+ "00" + "099";
-	private static final String trnMensaje$VaxErrorNoEspecificadoErrorCod = "12"
-			+ "099";
-	// --
-	private static final String trnMensaje$EculinkConnectionError = "0012"
-			+ "00" + "026";
-	private static final String trnMensaje$EculinkConnectionErrorCod = "12"
-			+ "026";
-	// --
-	private static final String trnMensaje$VaxTrxNotSendError = "0012" + "00"
-			+ "027";
-	private static final String trnMensaje$VaxTrxNotSendErrorCod = "12" + "027";
-	// --
-	private static final String idcErrorVaxTrxFormFull = "E";
+//	private static final String trnMensaje$VaxErrorNoEspecificadoError = "0012"
+//			+ "00" + "099";
+//	private static final String trnMensaje$VaxErrorNoEspecificadoErrorCod = "12"
+//			+ "099";
+//	// --
+//	private static final String trnMensaje$EculinkConnectionError = "0012"
+//			+ "00" + "026";
+//	private static final String trnMensaje$EculinkConnectionErrorCod = "12"
+//			+ "026";
+//	// --
+//	private static final String trnMensaje$VaxTrxNotSendError = "0012" + "00"
+//			+ "027";
+//	private static final String trnMensaje$VaxTrxNotSendErrorCod = "12" + "027";
+//	// --
+//	private static final String idcErrorVaxTrxFormFull = "E";
 	//private boolean writeConsole = false;
 	// --
 	private static final String errorParametrosMsg = "No se procesa Transaccion. Campo Obligatorio Nulo: ";
-	private static final String errorEnvioVaxMsg = "Error en envio Vax: ";
+//	private static final String errorEnvioVaxMsg = "Error en envio Vax: ";
 	// --
+	private static final String errorCastDate = "No se procesa Transaccion. Problema con Fecha: ";
 	private static final BigDecimal prmArSistema$Satelites = new BigDecimal(2);
 	private static final BigDecimal prmArSistema$Portal = new BigDecimal(5);
 	private static final BigDecimal prmArSistema$VAX = new BigDecimal(8);
@@ -370,6 +376,8 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		boolean consultaVAX = false;
 		boolean consultaAIX = false;
 		boolean recaGeneraCodigoBarra = false;
+		boolean consultaCFUAIX = false; // VRC CFU
+		boolean consultaCFUVAX = false;  // VRC CFU
 		ConsultaDeudaPortalResult consultaDeudaPortalResult = new ConsultaDeudaPortalResult();
 
 		// -----------Inicializacion y Validacion Variables Entrada------------
@@ -426,6 +434,25 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 					.setResultMessage("Error al cargar archivo de propiedades. Propiedad consultaDeudasPortal.destinoConsulta");
 			return consultaDeudaPortalResult;
 		}
+		
+		 // VRC CFU ini
+		try {
+			if (getProperties("consultaDeudasPortal.destinoConsultaCFU").equals(
+					properties$destinoTrx$Vax)) {
+				consultaCFUVAX = true;
+			} else {
+				consultaCFUAIX = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Error consultaDeudasAix", e);
+			consultaDeudaPortalResult
+					.setResultCode(ConsultaDeudaPortalResult.TRX_ERROR);
+			consultaDeudaPortalResult
+					.setResultMessage("Error al cargar archivo de propiedades. Propiedad consultaDeudasPortal.destinoConsultaCFU");
+			return consultaDeudaPortalResult;
+		}
+		// VRC CFU fin
 
 		try {
 			if (getProperties("consultaDeudasPortal.sistemaGeneraCodBarra")
@@ -501,10 +528,21 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 								claveConsulta, grupo, canal,
 								recaGeneraCodigoBarra, sistemaCondonacion);
 					} else if (grupo.equals(frmGrupo$Cfu)) {
+						// VRC CFU ini
+						if (consultaCFUAIX) {
+							consultaDeudasVaxPortal = consultaDeudasRecaGrupo(usuario,
+		                            sistema, codTransac, fechaOrigen, idConsulta, grupo,
+		                            canal, clienteTipo, rutRol, rutRolDv, formTipo,
+		                            formVer, formFolio, vencimiento, null, rutIra,
+		                            rutIraDv, oficinaId,sistemaCondonacion);  
+						} else {
 						consultaDeudasVaxPortal = consultaDeudasCfuPortal(
 								usuario, rutIra, rutIraDv, oficinaId,
 								claveConsulta, grupo, canal,
 								recaGeneraCodigoBarra, sistemaCondonacion);
+						}
+						// VRC CFU fin
+						
 					} else if (grupo.equals(frmGrupo$CutReca)) {
 						consultaDeudasVaxPortal = consultaDeudasRecaGrupo(
 								usuario, sistema, codTransac,
@@ -543,9 +581,22 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 							claveConsulta, grupo, canal, recaGeneraCodigoBarra,
 							sistemaCondonacion);
 				} else if (grupo.equals(frmGrupo$Cfu)) {
-					consultaDeudasRecaPortal = consultaDeudasCfuPortal(usuario,
-							rutIra, rutIraDv, oficinaId, claveConsulta, grupo,
-							canal, recaGeneraCodigoBarra, sistemaCondonacion);
+						// VRC CFU ini
+					if (consultaCFUAIX) {
+						consultaDeudasRecaPortal = consultaDeudasRecaGrupo(usuario,
+	                            sistema, codTransac, fechaOrigen, idConsulta, grupo,
+	                            canal, clienteTipo, rutRol, rutRolDv, formTipo,
+	                            formVer, formFolio, vencimiento, null, rutIra,
+	                            rutIraDv, oficinaId,sistemaCondonacion);  
+					} else {
+						consultaDeudasRecaPortal = consultaDeudasCfuPortal(
+							usuario, rutIra, rutIraDv, oficinaId,
+							claveConsulta, grupo, canal,
+							recaGeneraCodigoBarra, sistemaCondonacion);
+					}
+					// VRC CFU fin
+					
+					
 				} else if (grupo.equals(frmGrupo$AduanaDiferido)) {
 					consultaDeudasRecaPortal = consultaDeudasVaxPortal(usuario,
 							codTransac, rutIra, rutIraDv, oficinaId,
@@ -626,6 +677,163 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 
 		return consultaDeudaPortalResult;
 
+	}
+	
+	/**
+	 * Executes the "PKG_CUT_SERVICES_TRX.INGRESAR_FORM_IRA" database procedure. MAN00 JGM&/((FGS
+	 */
+	@Override
+	public ConsultaDeudaPortalResult consultaDeudasAix(String usuario, 
+			BigDecimal sistema, String codTransac, Date fechaOrigen, 
+			BigDecimal idConsulta, BigDecimal grupo, BigDecimal canal, 
+			BigDecimal folio, String pasaporte, String sistemaCondonacion )     throws PkgCutServicesTrxException{
+		logger.info("*************************************************");
+		Calendar fechOrigen = Calendar.getInstance();
+		Calendar fechaAntiguedad = Calendar.getInstance();
+		Calendar fechaLiquidacion = Calendar.getInstance();
+		Calendar periodo = Calendar.getInstance();
+		Calendar fechaVcto = Calendar.getInstance();
+		
+		ConsultaDeudaPortalResult consultaDeudaPortalResult = new ConsultaDeudaPortalResult();
+
+		// -----------Inicializacion y Validacion Variables Entrada------------
+		if (usuario == null || codTransac == null || fechaOrigen == null
+				|| idConsulta == null || grupo == null || canal == null) {
+			String campoNulo = null;
+
+			if (usuario == null) {
+				campoNulo = "usuario";
+			}
+			if (codTransac == null) {
+				campoNulo = "codTransac";
+			}
+			if (fechaOrigen == null) {
+				campoNulo = "fechaOrigen";
+			}
+			if (idConsulta == null) {
+				campoNulo = "idConsulta";
+			}
+			if (grupo == null) {
+				campoNulo = "grupo";
+			}
+			if (canal == null) {
+				campoNulo = "canal";
+			}
+			
+			consultaDeudaPortalResult
+					.setResultCode(ConsultaDeudaPortalResult.TRX_ERROR);
+			consultaDeudaPortalResult.setResultMessage(errorParametrosMsg
+					+ campoNulo);
+			return consultaDeudaPortalResult;
+		}
+		// --------------------------------------------------------
+
+		PkgCutServicesFronterizoDelegate delegate = new PkgCutServicesFronterizoDelegate();
+		ConsultaDeudaFronterizoInVO voInFronterizo = new ConsultaDeudaFronterizoInVO();
+		ConsultaDeudaFronterizoOutVO voOutFronterizo = new ConsultaDeudaFronterizoOutVO();
+		Collection<ConsultaDeudaFronterizoOutCursorSalidaVO> colFronterizo;
+
+		try{
+		
+			try{
+				fechOrigen.setTime(fechaOrigen);
+			}catch(Exception ex){
+				logger.error("PROBLEMAS AL CASTEAR FECHA DE DATE A CALENDAR", ex);
+				consultaDeudaPortalResult.setResultCode(ConsultaDeudaPortalResult.TRX_ERROR);
+				consultaDeudaPortalResult.setResultMessage(errorCastDate);
+				return consultaDeudaPortalResult;
+			}
+			
+			
+			voInFronterizo.setInCanal(canal);
+			voInFronterizo.setInFechaOrigen(fechaOrigen);
+			voInFronterizo.setInFolio(folio);
+			voInFronterizo.setInGrupo(grupo);
+			voInFronterizo.setInIdConsulta(idConsulta);
+			voInFronterizo.setInPasaporte(pasaporte);
+			voInFronterizo.setInSistema(sistema);
+			voInFronterizo.setInSistemaCondonacio(sistemaCondonacion);
+			voInFronterizo.setInUser(usuario);
+			voInFronterizo.setInCodTransac2(codTransac);
+			
+			
+			voOutFronterizo = delegate.consultaDeudaFronterizo(voInFronterizo);
+			colFronterizo = voOutFronterizo.getOutCursorSalida();
+			
+			DeudaPortal[] deudaPortArr = new DeudaPortal[colFronterizo.size()];
+			int i=0;
+			
+			
+			
+			//recorremos la colecction y llenamos un ArrayList
+			for(ConsultaDeudaFronterizoOutCursorSalidaVO vo: colFronterizo){
+				DeudaPortal deu = new DeudaPortal();
+				
+				try{
+					fechOrigen.setTime(fechaOrigen);
+					fechaAntiguedad.setTime(vo.getFechaAntiguedad());
+					fechaLiquidacion.setTime(vo.getCutCta$fechaLiquidacion());
+					periodo.setTime(vo.getCutCta$periodo());
+					fechaVcto.setTime(vo.getCutCta$fechaVcto());
+				}catch(Exception ex){
+					logger.error("PROBLEMAS AL CASTEAR FECHA DE DATE A CALENDAR", ex);
+					consultaDeudaPortalResult.setResultCode(ConsultaDeudaPortalResult.TRX_ERROR);
+					consultaDeudaPortalResult.setResultMessage(errorCastDate);
+					return consultaDeudaPortalResult;
+				}
+				
+				
+				deu.setClienteTipo(vo.getCutCta$clienteTipo() != null ? vo.getCutCta$clienteTipo() : null);
+				deu.setCondonacion(vo.getCondona() != null ? vo.getCondona() : null);
+				deu.setFechaAntiguedad(fechaAntiguedad != null ? fechaAntiguedad : null);
+				deu.setFechaLiquidacion(fechaLiquidacion != null ? fechaLiquidacion : null);
+				deu.setFormFolio(vo.getCutCta$formFolio() != null ?vo.getCutCta$formFolio() : null);
+				deu.setFormOrigCta(vo.getCutCta$formOriginal() != null ? vo.getCutCta$formOriginal() : null);
+				deu.setFormTipo(vo.getCutCta$formTipo() != null ? vo.getCutCta$formTipo() : null);
+				deu.setFormVer(vo.getCutCta$formVer() != null ? vo.getCutCta$formVer() : null);
+				deu.setGrupo(grupo != null ? grupo : null);
+				deu.setIdLiquidacion(vo.getCodigoBarra() != null ? vo.getCodigoBarra() : null);
+				deu.setInstitucionId(vo.getCutCta$institucion() != null ? vo.getCutCta$institucion() : null);
+				deu.setIntereses(vo.getIntereses() != null ? vo.getIntereses() : null);
+				deu.setLiqResultCode(vo.getVRetCode() != null ? vo.getVRetCode() : null);
+				deu.setLiqResultMessage(vo.getVRetMsg() != null ? vo.getVRetMsg() : null);
+				deu.setMonedaId(vo.getCutCta$moneda() != null ? vo.getCutCta$moneda() : null);
+				deu.setMontoPlazo(vo.getCapital() != null ? vo.getCapital() : null);
+				deu.setMontoTotalPagar(vo.getMontoTotal() != null ? vo.getMontoTotal() : null);
+				deu.setMultas(vo.getMultas() != null ? vo.getMultas(): null);
+				deu.setPeriodo(periodo != null ? periodo : null);
+				deu.setPorcCondonacion(null);
+				deu.setReajustes(vo.getReajustes()!= null ? vo.getReajustes() : null);
+				deu.setRutRol(vo.getCutCta$rutRol()!= null ? vo.getCutCta$rutRol() : null);
+				deu.setRutRolDv(vo.getCutCta$rutDv()!= null ? vo.getCutCta$rutDv() : null);
+				deu.setSistemaOrigen(sistema.toString()!= null ? sistema.toString() : null);
+				deu.setVencimiento(fechaVcto!= null ? fechaVcto : null);
+				
+				logger.info("TIPOCLIENTE : "+vo.getCutCta$clienteTipo());
+				logger.info("FORMULARIO : "+vo.getCutCta$formTipo());
+				logger.info("FOLIO : "+vo.getCutCta$formFolio());
+				deudaPortArr[i] = deu;
+				logger.info("deudaPortArr : "+deudaPortArr.toString());
+				i++;
+			}
+	
+			logger.info("CICLO : "+deudaPortArr.toString());
+			
+			consultaDeudaPortalResult.setDeudaPortalArr(deudaPortArr);
+			consultaDeudaPortalResult.setCodTransac("DE002"); // Temporal en Duro
+			consultaDeudaPortalResult.setIdConsulta(idConsulta);
+			consultaDeudaPortalResult.setFechaOrigen(fechOrigen);
+			consultaDeudaPortalResult.setResultCode(voOutFronterizo.getOutErrlvlFront());
+	
+		}catch(Exception ex){
+			logger.error("PROBLEMAS EN PROCESO DE FRONTERIZO", ex);
+			consultaDeudaPortalResult.setResultCode(ConsultaDeudaPortalResult.TRX_ERROR);
+			consultaDeudaPortalResult.setResultMessage("Problema en la liquidacion por Pasaporte" + ex.getStackTrace());
+			return consultaDeudaPortalResult;
+		}
+		
+		
+		return consultaDeudaPortalResult;
 	}
 
 	/**
@@ -3905,7 +4113,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 							"TLT-VALOR-EN-PLAZO", i));
 					recaDeudaOut.setMontoIntereses(mensajeOut.getNumber(
 							"TLT-VALOR-INTERESES", i));
-					recaDeudaOut.setMontoMultas(new BigDecimal(0));
+					recaDeudaOut.setMontoMultas(new BigDecimal(0)); // IR50711
 					recaDeudaOut.setMontoReajustes(mensajeOut.getNumber(
 							"TLT-VALOR-REAJUSTES", i));
 					recaDeudaOut.setMontoCondonacion(mensajeOut.getNumber(
@@ -4056,7 +4264,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 					deudasPortal.setRutRol(claveDeudaOut.getRutRol());
 					deudasPortal.setRutRolDv(claveDeudaOut.getRutRolDv());
 					deudasPortal.setFormTipo(claveDeudaOut.getFormTipo());
-					deudasPortal.setFormOrigCta(claveDeudaOut.getFormTipo());
+					deudasPortal.setFormOrigCta(claveDeudaOut.getFormTipo()); //MAN1537
 					deudasPortal.setFormVer(claveDeudaOut.getFormVer());
 					deudasPortal.setFormFolio(claveDeudaOut.getFormFolio());
 					deudasPortal.setVencimiento(claveDeudaOut.getVencimiento());
@@ -4082,8 +4290,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 					deudasPortal.setLiqResultMessage("OK");
 					deudasPortal.setPorcCondonacion(new BigDecimal(0));
 					deudasPortal.setFechaAntiguedad(TypesUtil
-							.dateToCalendar(fechaAntiguedaDeuda));
-					
+							.dateToCalendar(fechaAntiguedaDeuda)); //IR50711
 										
 					if (esPagoTotal && itemsAR != null) {
 						GetFrmIdSafeResult getFrmIdResult = getPkgCajaServicesPSrvEJB()
@@ -4187,9 +4394,10 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		int codigoRetorno = 0;
 		boolean esCanalInteractivo = false;
 		BigDecimal montoTotal;
+		
 		String itemsAR = null;
-		String touplestgf;
-		String contexttgfin;
+		//String touplestgf;
+		//String contexttgfin;
 		Date fechaAntiguedaDeuda = null;
 
 		try {
@@ -4505,7 +4713,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 					deudasPortal.setRutRol(claveDeudaOut.getRutRol());
 					deudasPortal.setRutRolDv(claveDeudaOut.getRutRolDv());
 					deudasPortal.setFormTipo(claveDeudaOut.getFormTipo());
-					deudasPortal.setFormOrigCta(claveDeudaOut.getFormTipo());
+					deudasPortal.setFormOrigCta(claveDeudaOut.getFormTipo()); //MAN1537
 					deudasPortal.setFormVer(claveDeudaOut.getFormVer());
 					deudasPortal.setFormFolio(claveDeudaOut.getFormFolio());
 					deudasPortal.setVencimiento(claveDeudaOut.getVencimiento());
@@ -4831,7 +5039,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		return getCtasCutAdnResult;
 	}
 
-	Calendar fechaVaxToCalendar(String periodoVaxStr) throws Exception {
+	private Calendar fechaVaxToCalendar(String periodoVaxStr) throws Exception {
 		try {
 			int periodoVax = Integer.parseInt(periodoVaxStr);
 
@@ -4922,7 +5130,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 
 	}
 
-	GregorianCalendar toGregorianCalendar(Calendar c1) {
+	private GregorianCalendar toGregorianCalendar(Calendar c1) {
 		if (c1 != null) {
 			return new GregorianCalendar(c1.get(Calendar.YEAR),
 					c1.get(Calendar.MONTH), c1.get(Calendar.DAY_OF_MONTH),
@@ -5430,59 +5638,59 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		return resultIngreso;
 	}
 
-	private RecaOut validarFormTrxFormFull(String user, BigDecimal rutIra,
-			String rutIraDv, BigDecimal formTipo, String formVer,
-			RecaItems[] items, String idOrigen, String paquete, String ruta,
-			BigDecimal folioF01, Calendar fechaOrigen, Calendar fechaCaja,
-			BigDecimal loteCanal, BigDecimal loteTipo, BigDecimal cutMovEstado,
-			String esReversaStr) throws Exception {
-		String itemsStr = null;
-		String frmOpcion = "V";
-		RecaOut resultValidacion = new RecaOut();
-
-		try {
-			itemsStr = RecaItems.PackTouplesReca(items);
-
-			TrxFormFullResult trxFormFullResult = trxFormFull(user, // String
-																	// inUser,
-					rutIra, // BigDecimal inRutIra,
-					rutIraDv, // String inRutIraDv,
-					formTipo, // BigDecimal inFormTipo,
-					formVer, // String inFormVer,
-					itemsStr, // String inItems,
-					idOrigen, // String inIdOrigen,
-					paquete, // String inPaquete,
-					ruta, // String inRuta,
-					folioF01, // BigDecimal inFolioF01,
-					TypesUtil.calendarToDate(fechaOrigen), // Date
-															// inFechaOrigen,
-					TypesUtil.calendarToDate(fechaCaja), // Date inFechaCaja,
-					null, // BigDecimal inLoteId,
-					loteCanal, // BigDecimal inLoteCanal,
-					loteTipo, // BigDecimal inLoteTipo,
-					cutMovEstado, // BigDecimal inCutMovEstado,
-					esReversaStr, // String inEsReversa,
-					null, // BigDecimal inMovIdAnular,
-					frmOpcion, null, // String inFmtDataErr,
-					null, // String inFmtDataSal,
-					"validacion", // String inMotivo,
-					null); // String inResolucion);
-
-			resultValidacion.setResultCode(trxFormFullResult.getOutErrlvl());
-			resultValidacion.setResultMessage(trxFormFullResult
-					.getOutMensajes());
-
-			RowSet rsMsg = trxFormFullResult.getRowSet(0);
-
-			resultValidacion.recaMensajes = getMensajesFromRowSet(rsMsg);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Error validarFormTrxFormFull", e);
-			throw new Exception(formatException(e, "validarFormTrxFormFull",
-					true, 0));
-		}
-		return resultValidacion;
-	}
+//	private RecaOut validarFormTrxFormFull(String user, BigDecimal rutIra,
+//			String rutIraDv, BigDecimal formTipo, String formVer,
+//			RecaItems[] items, String idOrigen, String paquete, String ruta,
+//			BigDecimal folioF01, Calendar fechaOrigen, Calendar fechaCaja,
+//			BigDecimal loteCanal, BigDecimal loteTipo, BigDecimal cutMovEstado,
+//			String esReversaStr) throws Exception {
+//		String itemsStr = null;
+//		String frmOpcion = "V";
+//		RecaOut resultValidacion = new RecaOut();
+//
+//		try {
+//			itemsStr = RecaItems.PackTouplesReca(items);
+//
+//			TrxFormFullResult trxFormFullResult = trxFormFull(user, // String
+//																	// inUser,
+//					rutIra, // BigDecimal inRutIra,
+//					rutIraDv, // String inRutIraDv,
+//					formTipo, // BigDecimal inFormTipo,
+//					formVer, // String inFormVer,
+//					itemsStr, // String inItems,
+//					idOrigen, // String inIdOrigen,
+//					paquete, // String inPaquete,
+//					ruta, // String inRuta,
+//					folioF01, // BigDecimal inFolioF01,
+//					TypesUtil.calendarToDate(fechaOrigen), // Date
+//															// inFechaOrigen,
+//					TypesUtil.calendarToDate(fechaCaja), // Date inFechaCaja,
+//					null, // BigDecimal inLoteId,
+//					loteCanal, // BigDecimal inLoteCanal,
+//					loteTipo, // BigDecimal inLoteTipo,
+//					cutMovEstado, // BigDecimal inCutMovEstado,
+//					esReversaStr, // String inEsReversa,
+//					null, // BigDecimal inMovIdAnular,
+//					frmOpcion, null, // String inFmtDataErr,
+//					null, // String inFmtDataSal,
+//					"validacion", // String inMotivo,
+//					null); // String inResolucion);
+//
+//			resultValidacion.setResultCode(trxFormFullResult.getOutErrlvl());
+//			resultValidacion.setResultMessage(trxFormFullResult
+//					.getOutMensajes());
+//
+//			RowSet rsMsg = trxFormFullResult.getRowSet(0);
+//
+//			resultValidacion.recaMensajes = getMensajesFromRowSet(rsMsg);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error("Error validarFormTrxFormFull", e);
+//			throw new Exception(formatException(e, "validarFormTrxFormFull",
+//					true, 0));
+//		}
+//		return resultValidacion;
+//	}
 
 	/**
      * 
@@ -5549,79 +5757,79 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		return resultIngreso;
 	}
 
-	private class ProcesarADFResult {
-		public String itemsCut;
-		public ContextADF contextADF;
+//	private class ProcesarADFResult {
+//		public String itemsCut;
+//		public ContextADF contextADF;
+//
+//		public ContextADF createContextAdf() {
+//			return new ContextADF();
+//		}
+//
+//		public class ContextADF {
+//			public BigDecimal montoPagar;
+//		}
+//	}
 
-		public ContextADF createContextAdf() {
-			return new ContextADF();
-		}
+//	private ProcesarADFResult callProcesarADF(BigDecimal formTipo,
+//			String formVer, RecaItems[] items) throws Exception {
+//		ProcesarADFResult procesarADFResult = new ProcesarADFResult();
+//		String itemsCutStr = null;
+//		String contextTgf = null;
+//
+//		try {
+//			DateFormat format1 = new SimpleDateFormat("yyyyMMdd");
+//			String fechaHoy = format1.format(new java.util.Date()).toString();
+//			String contextTGF = TypesUtil.addCharCS("fecha_caja")
+//					+ TypesUtil.addCharLS(fechaHoy);
+//
+//			contextTGF = contextTGF + TypesUtil.addCharCS("form_cod")
+//					+ TypesUtil.addCharLS(formTipo.toString());
+//			contextTGF = contextTGF + TypesUtil.addCharCS("form_ver")
+//					+ TypesUtil.addCharLS(formVer);
+//			contextTGF = contextTGF + TypesUtil.addCharCS("form_vig")
+//					+ TypesUtil.addCharLS(fechaHoy);
+//			contextTGF = contextTGF + TypesUtil.addCharCS("trace_lvl")
+//					+ TypesUtil.addCharLS("2");
+//			contextTGF = contextTGF + TypesUtil.addCharCS("flag_digitacion")
+//					+ TypesUtil.addCharLS("1");
+//			TypesUtil.addCharRS(contextTGF);
+//
+//			ProcesarResult result = getPkgCajaServicesPSrvEJB().procesar(
+//					RecaItems.PackTouplesReca(items), contextTGF);
+//
+//			itemsCutStr = result.getItemsOut();
+//			contextTgf = result.getContexttgfout();
+//
+//			ProcesarADFResult.ContextADF contextADF = procesarADFResult.new ContextADF();
+//
+//			contextADF.montoPagar = new BigDecimal(100);
+//
+//			String splitPattern = LS + "|" + RS;
+//			String[] contexto = contextTgf.split(splitPattern);
+//
+//			for (int x = 0; x < contexto.length; x++) {
+//				if (contexto[x].toLowerCase().startsWith("lq_a_pagar")) {
+//					splitPattern = CS + "|" + RS;
+//
+//					String[] liquida = contexto[x].split(splitPattern);
+//
+//					contextADF.montoPagar = TypesUtil
+//							.parseBigDecimal(liquida[1]);
+//				}
+//			}
+//			procesarADFResult.itemsCut = itemsCutStr;
+//			procesarADFResult.contextADF = contextADF;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error("Error callProcesarADF", e);
+//			throw new Exception(formatException(e, "callProcesarADF", true, 0));
+//		}
+//		return procesarADFResult;
+//	}
 
-		public class ContextADF {
-			public BigDecimal montoPagar;
-		}
-	}
-
-	private ProcesarADFResult callProcesarADF(BigDecimal formTipo,
-			String formVer, RecaItems[] items) throws Exception {
-		ProcesarADFResult procesarADFResult = new ProcesarADFResult();
-		String itemsCutStr = null;
-		String contextTgf = null;
-
-		try {
-			DateFormat format1 = new SimpleDateFormat("yyyyMMdd");
-			String fechaHoy = format1.format(new java.util.Date()).toString();
-			String contextTGF = TypesUtil.addCharCS("fecha_caja")
-					+ TypesUtil.addCharLS(fechaHoy);
-
-			contextTGF = contextTGF + TypesUtil.addCharCS("form_cod")
-					+ TypesUtil.addCharLS(formTipo.toString());
-			contextTGF = contextTGF + TypesUtil.addCharCS("form_ver")
-					+ TypesUtil.addCharLS(formVer);
-			contextTGF = contextTGF + TypesUtil.addCharCS("form_vig")
-					+ TypesUtil.addCharLS(fechaHoy);
-			contextTGF = contextTGF + TypesUtil.addCharCS("trace_lvl")
-					+ TypesUtil.addCharLS("2");
-			contextTGF = contextTGF + TypesUtil.addCharCS("flag_digitacion")
-					+ TypesUtil.addCharLS("1");
-			TypesUtil.addCharRS(contextTGF);
-
-			ProcesarResult result = getPkgCajaServicesPSrvEJB().procesar(
-					RecaItems.PackTouplesReca(items), contextTGF);
-
-			itemsCutStr = result.getItemsOut();
-			contextTgf = result.getContexttgfout();
-
-			ProcesarADFResult.ContextADF contextADF = procesarADFResult.new ContextADF();
-
-			contextADF.montoPagar = new BigDecimal(100);
-
-			String splitPattern = LS + "|" + RS;
-			String[] contexto = contextTgf.split(splitPattern);
-
-			for (int x = 0; x < contexto.length; x++) {
-				if (contexto[x].toLowerCase().startsWith("lq_a_pagar")) {
-					splitPattern = CS + "|" + RS;
-
-					String[] liquida = contexto[x].split(splitPattern);
-
-					contextADF.montoPagar = TypesUtil
-							.parseBigDecimal(liquida[1]);
-				}
-			}
-			procesarADFResult.itemsCut = itemsCutStr;
-			procesarADFResult.contextADF = contextADF;
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Error callProcesarADF", e);
-			throw new Exception(formatException(e, "callProcesarADF", true, 0));
-		}
-		return procesarADFResult;
-	}
-
-	private class PagoADFResult extends ProcesarADFResult {
-		public String itemsPago;
-	}
+//	private class PagoADFResult extends ProcesarADFResult {
+//		public String itemsPago;
+//	}
 
 	/**
      * 
@@ -6620,31 +6828,31 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 	 * separados por comas Retorna TRUE, si el formulario es diferido, False si
 	 * debe ser registrado en RECA
 	 */
-	private boolean esFrmDiferido(String trx, BigDecimal formTipo,
-			String codigoBarras) {
-		try {
-			if (TypesUtil.rellenaCerosIzquierda(codigoBarras, 15)
-					.substring(11, 12).equals("9")) {
-				// formulario fue generado en RECA por lo que siempre se ingresa
-				return false;
-			} else {
-				String listaFrmsStr = getProperties(trx + ".formsDiferidos");
-				String[] listaFrms = listaFrmsStr.split(",");
-
-				for (int j = 0; j < listaFrms.length; j++) {
-					if (TypesUtil.parseBigDecimal(listaFrms[j])
-							.equals(formTipo)) {
-						return true;
-					}
-				}
-			}
-
-		} catch (Exception e) {// Nothing
-			e.printStackTrace();
-			logger.error("Error esFrmDiferido", e);
-		}
-		return false;
-	}
+//	private boolean esFrmDiferido(String trx, BigDecimal formTipo,
+//			String codigoBarras) {
+//		try {
+//			if (TypesUtil.rellenaCerosIzquierda(codigoBarras, 15)
+//					.substring(11, 12).equals("9")) {
+//				// formulario fue generado en RECA por lo que siempre se ingresa
+//				return false;
+//			} else {
+//				String listaFrmsStr = getProperties(trx + ".formsDiferidos");
+//				String[] listaFrms = listaFrmsStr.split(",");
+//
+//				for (int j = 0; j < listaFrms.length; j++) {
+//					if (TypesUtil.parseBigDecimal(listaFrms[j])
+//							.equals(formTipo)) {
+//						return true;
+//					}
+//				}
+//			}
+//
+//		} catch (Exception e) {// Nothing
+//			e.printStackTrace();
+//			logger.error("Error esFrmDiferido", e);
+//		}
+//		return false;
+//	}
 
 	private String getItemCodeFrmOrigen(RecaItems[] items) {
 		String itemCodeFrmOrigen = null;
@@ -6678,7 +6886,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 
 	// Evalua si el formulario es Giro o no
 	private boolean esFrmGiro(BigDecimal frmCode) throws Exception {
-		// Por ahora 25 y 45 en duro�
+		// Por ahora 25 y 45 en duroM
 		if (frmCode != null
 				&& (frmCode.equals(new BigDecimal(25)) || frmCode
 						.equals(new BigDecimal(45)))) {
@@ -6688,7 +6896,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	boolean esArGeneradoReca(String codigoBarra) {
+	private boolean esArGeneradoReca(String codigoBarra) {
 		// Aca evaluamos los codigos de barras de largo 15
 		// Los codigos de barra de largo 15 traen valor 9 en la posicion 12
 		// cuando son generados en el reca
@@ -6770,7 +6978,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	AdfLiquidaResult adfLiquida(String touplestgf, String contexttgfin)
+	private AdfLiquidaResult adfLiquida(String touplestgf, String contexttgfin)
 			throws PkgCutServicesTrxException {
 		try {
 			return AdfLiquidaCaller.execute(dataSource, touplestgf,
@@ -6780,7 +6988,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	AdfValidaResult adfValida(String touplestgf, String contexttgfin)
+	private AdfValidaResult adfValida(String touplestgf, String contexttgfin)
 			throws PkgCutServicesTrxException {
 		try {
 			return AdfValidaCaller
@@ -6790,7 +6998,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 	
-	SistRetPorcCondonaResult sistRetPorcCondona(String sistemaCondonacion)
+	private SistRetPorcCondonaResult sistRetPorcCondona(String sistemaCondonacion)
 	throws PkgCutServicesTrxException {
 		try {
 			return SistRetPorcCondonaCaller
@@ -6800,7 +7008,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	AnulaPagoPortalResult anulaPagoPortal(String inUser, String inCodTransac,
+	private AnulaPagoPortalResult anulaPagoPortal(String inUser, String inCodTransac,
 			Date inFechaOrigen, String inCodigoBarra, BigDecimal inMonedaPago,
 			BigDecimal inValorCambio, BigDecimal inMontoPago,
 			BigDecimal inIdOperacion, BigDecimal inIdTransaccion,
@@ -6823,7 +7031,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	ArConsultarResult arConsultar(String inCodigoBarra, BigDecimal inFolioAr)
+	private ArConsultarResult arConsultar(String inCodigoBarra, BigDecimal inFolioAr)
 			throws PkgCutServicesTrxException {
 		try {
 			return ArConsultarCaller.execute(dataSource, inCodigoBarra,
@@ -6833,7 +7041,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	ArIngresarResult arIngresar(Date inFechaCaja, Date inFechaEmision,
+	private ArIngresarResult arIngresar(Date inFechaCaja, Date inFechaEmision,
 			Date inFechaValidez, BigDecimal inSistema, String inUsuario,
 			BigDecimal inClienteTipo, BigDecimal inRutRol, String inRutRolDv,
 			BigDecimal inFormCod, String inFormVer, BigDecimal inFormFolio,
@@ -6856,7 +7064,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	ArIngresarListaResult arIngresarLista(TrnAvisoReciboRowtype[] inListaAr)
+	private ArIngresarListaResult arIngresarLista(TrnAvisoReciboRowtype[] inListaAr)
 			throws PkgCutServicesTrxException {
 		try {
 			return ArIngresarListaCaller.execute(dataSource, inListaAr);
@@ -6865,23 +7073,23 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	ArPagarResult arPagar(String inUser, BigDecimal inRutIra,
-			String inRutIraDv, String inCodigoBarra, String inIdOrigen,
-			String inPaquete, String inRuta, BigDecimal inFolioF01,
-			Date inFechaOrigen, BigDecimal inLoteCanal, BigDecimal inLoteTipo,
-			BigDecimal inCutMovEstado, String inEsReversa, String inFrmOpcion,
-			String inFmtDataErr) throws PkgCutServicesTrxException {
-		try {
-			return ArPagarCaller.execute(dataSource, inUser, inRutIra,
-					inRutIraDv, inCodigoBarra, inIdOrigen, inPaquete, inRuta,
-					inFolioF01, inFechaOrigen, inLoteCanal, inLoteTipo,
-					inCutMovEstado, inEsReversa, inFrmOpcion, inFmtDataErr);
-		} catch (Exception ex) {
-			throw new PkgCutServicesTrxException(ex);
-		}
-	}
+//	private ArPagarResult arPagar(String inUser, BigDecimal inRutIra,
+//			String inRutIraDv, String inCodigoBarra, String inIdOrigen,
+//			String inPaquete, String inRuta, BigDecimal inFolioF01,
+//			Date inFechaOrigen, BigDecimal inLoteCanal, BigDecimal inLoteTipo,
+//			BigDecimal inCutMovEstado, String inEsReversa, String inFrmOpcion,
+//			String inFmtDataErr) throws PkgCutServicesTrxException {
+//		try {
+//			return ArPagarCaller.execute(dataSource, inUser, inRutIra,
+//					inRutIraDv, inCodigoBarra, inIdOrigen, inPaquete, inRuta,
+//					inFolioF01, inFechaOrigen, inLoteCanal, inLoteTipo,
+//					inCutMovEstado, inEsReversa, inFrmOpcion, inFmtDataErr);
+//		} catch (Exception ex) {
+//			throw new PkgCutServicesTrxException(ex);
+//		}
+//	}
 
-	AvisoPagoPortalResult avisoPagoPortal(String inUser, String inCodTransac,
+	private AvisoPagoPortalResult avisoPagoPortal(String inUser, String inCodTransac,
 			Date inFechaOrigen, String inCodigoBarra, BigDecimal inMonedaPago,
 			BigDecimal inValorCambio, BigDecimal inMontoPago,
 			BigDecimal inIdOperacion, BigDecimal inIdTransaccion,
@@ -6904,7 +7112,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	ConsultaDeudaGrupoRsResult consultaDeudaGrupoRs(String inUser,
+	private ConsultaDeudaGrupoRsResult consultaDeudaGrupoRs(String inUser,
 			String inCodTransac, Date inFechaOrigen, BigDecimal inIdConsulta,
 			BigDecimal inGrupo, BigDecimal inCanal, BigDecimal inClienteTipo,
 			BigDecimal inRutRol, String inRutRolDv, BigDecimal inFormCod,
@@ -6922,7 +7130,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	ConsultaFormsGrupoResult consultaFormsGrupo(BigDecimal inGrupoId,
+	private ConsultaFormsGrupoResult consultaFormsGrupo(BigDecimal inGrupoId,
 			BigDecimal inFormTipo) throws PkgCutServicesTrxException {
 		try {
 			return ConsultaFormsGrupoCaller.execute(dataSource, inGrupoId,
@@ -6932,7 +7140,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	GetCanalGlosaResult getCanalGlosa(BigDecimal inCanalId)
+	private GetCanalGlosaResult getCanalGlosa(BigDecimal inCanalId)
 			throws PkgCutServicesTrxException {
 		try {
 			return GetCanalGlosaCaller.execute(dataSource, inCanalId);
@@ -6941,7 +7149,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	GetCtasCutAdnRsResult getCtasCutAdnRs(BigDecimal inClienteTipo,
+	private GetCtasCutAdnRsResult getCtasCutAdnRs(BigDecimal inClienteTipo,
 			BigDecimal inRutRol, BigDecimal inFormTipo, BigDecimal inFormFolio,
 			Date inPeriodo, String inIncobrable)
 			throws PkgCutServicesTrxException {
@@ -6965,8 +7173,9 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 			throw new PkgCutServicesTrxException(ex);
 		}
 	}
+	
 
-	GetSistemaIncobrablesResult getSistemaIncobrables()
+	private GetSistemaIncobrablesResult getSistemaIncobrables()
 			throws PkgCutServicesTrxException {
 		try {
 			return GetSistemaIncobrablesCaller.execute(dataSource);
@@ -6975,7 +7184,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	GetTrnReqPagoDataResult getTrnReqPagoData(BigDecimal inTrnReqPagoId)
+	private GetTrnReqPagoDataResult getTrnReqPagoData(BigDecimal inTrnReqPagoId)
 			throws PkgCutServicesTrxException {
 		try {
 			return GetTrnReqPagoDataCaller.execute(dataSource, inTrnReqPagoId);
@@ -6984,7 +7193,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	GrabaLogTransaccionResult grabaLogTransaccion(String inTransaccionNombre,
+	private GrabaLogTransaccionResult grabaLogTransaccion(String inTransaccionNombre,
 			BigDecimal inOficina, BigDecimal inFormulario, String inCodigoAr,
 			String inRutRol, String inParametros, BigDecimal inCodigoRetorno,
 			String inMensajeRetorno, BigDecimal inCodigoRetOracle,
@@ -6999,7 +7208,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	ReversaPagoPortalResult reversaPagoPortal(String inUser,
+	private ReversaPagoPortalResult reversaPagoPortal(String inUser,
 			String inCodTransac, Date inFechaOrigen, String inCodigoBarra,
 			BigDecimal inMonedaPago, BigDecimal inValorCambio,
 			BigDecimal inMontoPago, BigDecimal inIdOperacion,
@@ -7022,28 +7231,28 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	TrxFormFullResult trxFormFull(String inUser, BigDecimal inRutIra,
-			String inRutIraDv, BigDecimal inFormTipo, String inFormVer,
-			String inItems, String inIdOrigen, String inPaquete, String inRuta,
-			BigDecimal inFolioF01, Date inFechaOrigen, Date inFechaCaja,
-			BigDecimal inLoteId, BigDecimal inLoteCanal, BigDecimal inLoteTipo,
-			BigDecimal inCutMovEstado, String inEsReversa,
-			BigDecimal inMovIdAnular, String inFrmOpcion, String inFmtDataErr,
-			String inFmtDataSal, String inMotivo, String inResolucion)
-			throws PkgCutServicesTrxException {
-		try {
-			return TrxFormFullCaller.execute(dataSource, inUser, inRutIra,
-					inRutIraDv, inFormTipo, inFormVer, inItems, inIdOrigen,
-					inPaquete, inRuta, inFolioF01, inFechaOrigen, inFechaCaja,
-					inLoteId, inLoteCanal, inLoteTipo, inCutMovEstado,
-					inEsReversa, inMovIdAnular, inFrmOpcion, inFmtDataErr,
-					inFmtDataSal, inMotivo, inResolucion);
-		} catch (Exception ex) {
-			throw new PkgCutServicesTrxException(ex);
-		}
-	}
+//	private TrxFormFullResult trxFormFull(String inUser, BigDecimal inRutIra,
+//			String inRutIraDv, BigDecimal inFormTipo, String inFormVer,
+//			String inItems, String inIdOrigen, String inPaquete, String inRuta,
+//			BigDecimal inFolioF01, Date inFechaOrigen, Date inFechaCaja,
+//			BigDecimal inLoteId, BigDecimal inLoteCanal, BigDecimal inLoteTipo,
+//			BigDecimal inCutMovEstado, String inEsReversa,
+//			BigDecimal inMovIdAnular, String inFrmOpcion, String inFmtDataErr,
+//			String inFmtDataSal, String inMotivo, String inResolucion)
+//			throws PkgCutServicesTrxException {
+//		try {
+//			return TrxFormFullCaller.execute(dataSource, inUser, inRutIra,
+//					inRutIraDv, inFormTipo, inFormVer, inItems, inIdOrigen,
+//					inPaquete, inRuta, inFolioF01, inFechaOrigen, inFechaCaja,
+//					inLoteId, inLoteCanal, inLoteTipo, inCutMovEstado,
+//					inEsReversa, inMovIdAnular, inFrmOpcion, inFmtDataErr,
+//					inFmtDataSal, inMotivo, inResolucion);
+//		} catch (Exception ex) {
+//			throw new PkgCutServicesTrxException(ex);
+//		}
+//	}
 
-	TrxFormFullFcResult trxFormFullFc(String inUser, BigDecimal inRutIra,
+	private TrxFormFullFcResult trxFormFullFc(String inUser, BigDecimal inRutIra,
 			String inRutIraDv, BigDecimal inFormTipo, String inFormVer,
 			String inItems, String inIdOrigen, String inPaquete, String inRuta,
 			BigDecimal inFolioF01, Date inFechaOrigen, Date inFechaCaja,
@@ -7066,7 +7275,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	TrxFormFullMasivoResult trxFormFullMasivo(String inLabel,
+	private TrxFormFullMasivoResult trxFormFullMasivo(String inLabel,
 			PkgCutServicesTrxFormData[] inListaForm)
 			throws PkgCutServicesTrxException {
 		try {
@@ -7077,7 +7286,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	UpdateTrnSafResult updateTrnSaf(BigDecimal inFolioEnvio,
+	private UpdateTrnSafResult updateTrnSaf(BigDecimal inFolioEnvio,
 			Date inFechaEnviado, String inEnviado, String inEstadoEnvio,
 			String inMsgEnvio, String inLogEnvio)
 			throws PkgCutServicesTrxException {
@@ -7090,7 +7299,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	RectificatoriaImpVerdeResult RectificatoriaImpVerdeBD(String inUser,
+	private RectificatoriaImpVerdeResult RectificatoriaImpVerdeBD(String inUser,
 			BigDecimal inRutIra, String inRutIraDv, BigDecimal inLoteCanal,
 			BigDecimal inLoteTipo, BigDecimal inCutMovIdOrig,
 			BigDecimal inFormTipo, String inFormVer, String inItems,
@@ -7106,7 +7315,7 @@ public class PkgCutServicesTrx implements PkgCutServicesTrxRemote,
 		}
 	}
 
-	IngresarMultiArResult ingresarMultiAr(String usuario,
+	private IngresarMultiArResult ingresarMultiAr(String usuario,
 			TrnAvisoReciboMRowtype[] inListaAr, BigDecimal montoTotal,
 			String codigoBarra) throws PkgCutServicesTrxException {
 		try {
